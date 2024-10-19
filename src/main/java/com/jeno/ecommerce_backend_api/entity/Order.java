@@ -13,7 +13,7 @@ public class Order {
     private Long id;
 
     @Column(nullable = false)
-    private Long UserId;
+    private Long userId;
 
     @Column(nullable = false)
     private Date orderDate;
@@ -25,7 +25,7 @@ public class Order {
     }
 
     public Order(Long userId, Date orderDate, Double totalAmount) {
-        UserId = userId;
+        this.userId = userId;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
     }
@@ -39,11 +39,11 @@ public class Order {
     }
 
     public Long getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(Long userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public Date getOrderDate() {
