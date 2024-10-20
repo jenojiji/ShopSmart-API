@@ -33,7 +33,6 @@ public class UserService {
 
     //create a new user
     public User createUser(User user) {
-        log.info("ufheufheifj");
         return userRepository.save(user);
     }
 
@@ -42,7 +41,7 @@ public class UserService {
         return userRepository.findById(id)
                 .map(existingUser->{
                     existingUser.setUsername(userDetails.getUsername());
-                    existingUser.setEmail(userDetails.getPassword());
+                    existingUser.setEmail(userDetails.getEmail());
                     existingUser.setPassword(userDetails.getPassword());
                     return userRepository.save(existingUser);
                 })
