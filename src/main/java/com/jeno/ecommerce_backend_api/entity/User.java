@@ -20,21 +20,24 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
+    @Column(name = "role")
+    private String role;
 
 
     public User() {
     }
 
-    public User(String email, String password) {
+    public User(String email, String password, String role) {
         this.email = email;
         this.password = password;
+        this.role = role;
 
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // For now, we are giving all users a simple "ROLE_USER" authority.
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
 
@@ -87,5 +90,13 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

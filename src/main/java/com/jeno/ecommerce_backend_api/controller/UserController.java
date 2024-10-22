@@ -5,7 +5,6 @@ import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,8 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,17 +19,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    @Autowired
-    private UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    public UserController(UserService userService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
 
-    private SecurityContextRepository securityContextRepository =
-            new HttpSessionSecurityContextRepository();
 
     //get all users
     @GetMapping
@@ -51,7 +48,9 @@ public class UserController {
     //create a new user
     @PostMapping("/register")
     public ResponseEntity<String> createUser(@RequestBody User user) {
+        user.setEmail(user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole("ROLE_" + user.getRole().toUpperCase());
         userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered succesfully");
     }
@@ -68,7 +67,6 @@ public class UserController {
     //Logout
     @PostMapping("/logout")
     public ResponseEntity<String> logoutUser(HttpServletRequest request) {
-        // Invalidate the session
         HttpSession session = request.getSession(false);
         if(session != null) {
             session.invalidate();
@@ -81,7 +79,6 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         User newUser = userService.updateUser(id, user);
-        System.out.println(newUser);
         return ResponseEntity.ok(newUser);
     }
 

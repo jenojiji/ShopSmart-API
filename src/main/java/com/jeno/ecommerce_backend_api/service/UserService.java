@@ -12,11 +12,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
-
-    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -32,8 +28,8 @@ public class UserService {
     }
 
     //create a new user
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public void createUser(User user) {
+        userRepository.save(user);
     }
 
     //Update an existing user
@@ -41,7 +37,6 @@ public class UserService {
         return userRepository.findById(id)
                 .map(existingUser->{
                     existingUser.setEmail(userDetails.getEmail());
-                    existingUser.setPassword(userDetails.getPassword());
                     return userRepository.save(existingUser);
                 })
                 .orElseThrow(()->new RuntimeException("Resource not Found,"+id));
