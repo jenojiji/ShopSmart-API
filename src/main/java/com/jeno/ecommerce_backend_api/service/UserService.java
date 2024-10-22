@@ -40,7 +40,6 @@ public class UserService {
     public User updateUser(Long id, User userDetails) {
         return userRepository.findById(id)
                 .map(existingUser->{
-                    existingUser.setUsername(userDetails.getUsername());
                     existingUser.setEmail(userDetails.getEmail());
                     existingUser.setPassword(userDetails.getPassword());
                     return userRepository.save(existingUser);
