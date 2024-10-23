@@ -1,5 +1,7 @@
 package com.jeno.ecommerce_backend_api.controller;
 
+import com.jeno.ecommerce_backend_api.dto.auth.AuthenticationRequestDto;
+import com.jeno.ecommerce_backend_api.dto.user.BaseUserDto;
 import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +33,7 @@ public class AuthController {
 
     //Register
     @PostMapping("/register")
-    public ResponseEntity<String> createUser(@RequestBody User user) {
+    public ResponseEntity<String> createUser(@RequestBody BaseUserDto user) {
         user.setEmail(user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ROLE_" + user.getRole().toUpperCase());
@@ -41,9 +43,9 @@ public class AuthController {
 
     //Login
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody User loginRequest, HttpSession session) {
+    public ResponseEntity<Object> login(@RequestBody AuthenticationRequestDto authenticationRequestDto, HttpSession session) {
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
-                loginRequest.getUsername(), loginRequest.getPassword());
+                authenticationRequestDto.getEmail(), authenticationRequestDto.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());

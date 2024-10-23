@@ -1,5 +1,6 @@
 package com.jeno.ecommerce_backend_api.service;
 
+import com.jeno.ecommerce_backend_api.dto.user.BaseUserDto;
 import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.repository.UserRepository;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -28,18 +30,24 @@ public class UserService {
     }
 
     //create a new user
-    public void createUser(User user) {
+    public void createUser(BaseUserDto userDto) {
+        User user = new User();
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setMobile(userDto.getMobile());
+        user.setPassword(userDto.getPassword());
+        user.setRole(userDto.getRole());
         userRepository.save(user);
     }
 
     //Update an existing user
     public User updateUser(Long id, User userDetails) {
         return userRepository.findById(id)
-                .map(existingUser->{
+                .map(existingUser -> {
                     existingUser.setEmail(userDetails.getEmail());
                     return userRepository.save(existingUser);
                 })
-                .orElseThrow(()->new RuntimeException("Resource not Found,"+id));
+                .orElseThrow(() -> new RuntimeException("Resource not Found," + id));
     }
 
     //Delete a user
