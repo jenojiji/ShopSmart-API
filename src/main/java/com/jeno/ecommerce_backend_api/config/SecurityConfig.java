@@ -45,19 +45,17 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/users/register", "/api/users/login").permitAll()
-                        .requestMatchers("/api/users").hasRole("ADMIN")
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/users/**").hasRole("USER")
-                        .requestMatchers("/api/products").hasRole("USER")
-                        .requestMatchers("/api/products/**").hasRole("ADMIN")
-                        .requestMatchers("/api/orders").hasRole("ADMIN")
+                        .requestMatchers("/api/products/**").hasRole("USER")
                         .requestMatchers("/api/orders/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/api/users/logout")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
+                        .deleteCookies("SESSION")
                 )
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)

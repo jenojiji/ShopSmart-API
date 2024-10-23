@@ -30,13 +30,6 @@ public class UserController {
         this.authenticationManager = authenticationManager;
     }
 
-
-    //get all users
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
     //get a user by ID
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
@@ -44,36 +37,6 @@ public class UserController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
-    //create a new user
-    @PostMapping("/register")
-    public ResponseEntity<String> createUser(@RequestBody User user) {
-        user.setEmail(user.getEmail());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("ROLE_" + user.getRole().toUpperCase());
-        userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User registered succesfully");
-    }
-
-    @PostMapping("/login")
-    public void login(@RequestBody User loginRequest, HttpSession session) {
-        UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
-                loginRequest.getUsername(), loginRequest.getPassword());
-        Authentication authentication = authenticationManager.authenticate(token);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-    }
-
-    //Logout
-    @PostMapping("/logout")
-    public ResponseEntity<String> logoutUser(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            session.invalidate();
-        }
-        return ResponseEntity.ok("User logged out successfully");
-    }
-
 
     //update user by ID
     @PutMapping("/{id}")

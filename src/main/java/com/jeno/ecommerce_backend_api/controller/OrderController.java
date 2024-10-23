@@ -20,11 +20,6 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    //Get all orders
-    @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
-    }
 
     //Get an order by orderID
     @GetMapping("/{id}")
@@ -45,7 +40,7 @@ public class OrderController {
         return orderService.getUserOrders(id);
     }
 
-    //delete an order
+    //Delete an order
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteOrder(@PathVariable Long id) {
         try {
@@ -53,7 +48,7 @@ public class OrderController {
             orderService.deleteOrder(id);
             // Return a success message if deletion is successful
             return ResponseEntity.ok("Order deleted successfully");
-        } catch(RuntimeException e) {
+        } catch (RuntimeException e) {
             // Return 404 Not Found if the order is not found or other issues arise
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
