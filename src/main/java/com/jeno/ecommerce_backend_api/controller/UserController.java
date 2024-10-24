@@ -1,6 +1,7 @@
 package com.jeno.ecommerce_backend_api.controller;
 
 
+import com.jeno.ecommerce_backend_api.dto.user.UserResponseDto;
 import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;

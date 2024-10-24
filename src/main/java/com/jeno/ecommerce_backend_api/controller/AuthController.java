@@ -2,6 +2,7 @@ package com.jeno.ecommerce_backend_api.controller;
 
 import com.jeno.ecommerce_backend_api.dto.auth.AuthenticationRequestDto;
 import com.jeno.ecommerce_backend_api.dto.user.BaseUserDto;
+import com.jeno.ecommerce_backend_api.dto.user.UserResponseDto;
 import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,20 +44,23 @@ public class AuthController {
 
     //Login
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody AuthenticationRequestDto authenticationRequestDto, HttpSession session) {
+    public ResponseEntity<UserResponseDto> login(@RequestBody AuthenticationRequestDto authenticationRequestDto, HttpSession session) {
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
                 authenticationRequestDto.getEmail(), authenticationRequestDto.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-        return new ResponseEntity<>(authentication.getPrincipal(), HttpStatus.OK);
+
+        User user = (User) authentication.getPrincipal();
+        UserResponseDto responseDto = new UserResponseDto(user.getId(), user.getName(), user.getEmail(), user.getMobile(), user.getRole());
+        return ResponseEntity.ok(responseDto);
     }
 
     //Logout
     @PostMapping("/logout")
     public ResponseEntity<String> logoutUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session != null) {
+        if(session != null) {
             session.invalidate();
         }
         return ResponseEntity.ok("User logged out successfully");

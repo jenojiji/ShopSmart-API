@@ -1,8 +1,8 @@
 package com.jeno.ecommerce_backend_api.controller;
 
+import com.jeno.ecommerce_backend_api.dto.user.UserResponseDto;
 import com.jeno.ecommerce_backend_api.entity.Order;
 import com.jeno.ecommerce_backend_api.entity.Product;
-import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.service.OrderService;
 import com.jeno.ecommerce_backend_api.service.ProductService;
 import com.jeno.ecommerce_backend_api.service.UserService;
@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -27,8 +28,11 @@ public class AdminController {
 
     //get all users
     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public List<UserResponseDto> getAllUsers() {
+        return userService.getAllUsers()
+                .stream()
+                .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail(), user.getMobile(), user.getRole()))
+                .collect(Collectors.toList());
     }
 
     //Get all products
@@ -41,7 +45,7 @@ public class AdminController {
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Product product = productService.getProductById(id);
-        if (product == null) {
+        if(product == null) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(product);
@@ -66,7 +70,7 @@ public class AdminController {
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         boolean isDeleted = productService.deleteProduct(id);
-        if (isDeleted) {
+        if(isDeleted) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
@@ -78,8 +82,6 @@ public class AdminController {
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
-
-
 
 
 }

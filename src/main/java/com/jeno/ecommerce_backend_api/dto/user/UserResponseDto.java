@@ -1,6 +1,8 @@
 package com.jeno.ecommerce_backend_api.dto.user;
 
-public class UserResponseDto {
+import com.jeno.ecommerce_backend_api.entity.User;
+
+public class UserResponseDto extends User {
     private Long id;
     private String name;
     private String email;
