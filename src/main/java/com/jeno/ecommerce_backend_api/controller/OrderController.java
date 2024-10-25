@@ -31,7 +31,7 @@ public class OrderController {
     //create new order
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody OrderRequestDto orderRequest) {
-        Order newOrder = orderService.createOrder(orderRequest.getUserId(), orderRequest.getProductIds(), orderRequest.getTotalAmount(), orderRequest.getDate());
+        Order newOrder = orderService.createOrder(orderRequest.getUserId(), orderRequest.getProductIds());
         return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
     }
 

@@ -26,23 +26,17 @@ public class OrderService {
     }
 
     //create new order
-    public Order createOrder(Long userId, List<Long> productIds, Double totalAmount, LocalDate date) {
+    public Order createOrder(Long userId, List<Long> productIds) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
         List<Product> products = productRepository.findAllById(productIds);
-        System.out.println(products);
-        // Print each product retrieved from the repository
+        double totalAmount = 0.0;
         for (Product product : products) {
+            totalAmount = totalAmount + product.getPrice();
             System.out.println("Product ID: " + product.getId() + ", Name: " + product.getName() + ", Price: " + product.getPrice());
         }
-        Order order = new Order(user, products, totalAmount, date);
 
-        System.out.println(order.getId());
-        System.out.println(order.getUser());
-        System.out.println(order.getProducts());
-        System.out.println(order.getTotalAmount());
-
-
+        Order order = new Order(user, products, totalAmount, LocalDate.now());
         return orderRepository.save(order);
     }
 
