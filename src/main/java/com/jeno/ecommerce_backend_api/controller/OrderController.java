@@ -1,5 +1,6 @@
 package com.jeno.ecommerce_backend_api.controller;
 
+import com.jeno.ecommerce_backend_api.dto.order.OrderRequestDto;
 import com.jeno.ecommerce_backend_api.entity.Order;
 import com.jeno.ecommerce_backend_api.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class OrderController {
 
     //create new order
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order newOrder = orderService.createOrder(order);
+    public ResponseEntity<Order> createOrder(@RequestBody OrderRequestDto orderRequest) {
+        Order newOrder = orderService.createOrder(orderRequest.getUserId(), orderRequest.getProductIds(), orderRequest.getTotalAmount(), orderRequest.getDate());
         return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
     }
 

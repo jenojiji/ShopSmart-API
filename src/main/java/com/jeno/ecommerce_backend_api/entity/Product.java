@@ -2,6 +2,9 @@ package com.jeno.ecommerce_backend_api.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "products")
 public class Product {
@@ -16,6 +19,9 @@ public class Product {
     private Double price;
     @Column(nullable = false)
     private String description;
+
+    @ManyToMany(mappedBy = "products")
+    private List<Order> orders = new ArrayList<>();
 
     public Product() {
     }
@@ -56,5 +62,9 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
     }
 }

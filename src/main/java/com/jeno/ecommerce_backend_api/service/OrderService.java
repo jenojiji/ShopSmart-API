@@ -1,24 +1,48 @@
 package com.jeno.ecommerce_backend_api.service;
 
 import com.jeno.ecommerce_backend_api.entity.Order;
+import com.jeno.ecommerce_backend_api.entity.Product;
+import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.repository.OrderRepository;
+import com.jeno.ecommerce_backend_api.repository.ProductRepository;
+import com.jeno.ecommerce_backend_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, UserRepository userRepository) {
         this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
     //create new order
-    public Order createOrder(Order order) {
+    public Order createOrder(Long userId, List<Long> productIds, Double totalAmount, LocalDate date) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Product> products = productRepository.findAllById(productIds);
+        System.out.println(products);
+        // Print each product retrieved from the repository
+        for (Product product : products) {
+            System.out.println("Product ID: " + product.getId() + ", Name: " + product.getName() + ", Price: " + product.getPrice());
+        }
+        Order order = new Order(user, products, totalAmount, date);
+
+        System.out.println(order.getId());
+        System.out.println(order.getUser());
+        System.out.println(order.getProducts());
+        System.out.println(order.getTotalAmount());
+
+
         return orderRepository.save(order);
     }
 
@@ -52,8 +76,6 @@ public class OrderService {
         orderRepository.delete(order);
 
     }
-
-
 
 
 }

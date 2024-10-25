@@ -44,7 +44,7 @@ public class AuthController {
 
     //Login
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDto> login(@RequestBody AuthenticationRequestDto authenticationRequestDto, HttpSession session) {
+    public ResponseEntity<User> login(@RequestBody AuthenticationRequestDto authenticationRequestDto, HttpSession session) {
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
                 authenticationRequestDto.getEmail(), authenticationRequestDto.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);
@@ -53,7 +53,7 @@ public class AuthController {
 
         User user = (User) authentication.getPrincipal();
         UserResponseDto responseDto = new UserResponseDto(user.getId(), user.getName(), user.getEmail(), user.getMobile(), user.getRole());
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(user);
     }
 
     //Logout
