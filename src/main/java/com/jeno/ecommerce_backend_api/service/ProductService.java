@@ -3,6 +3,9 @@ package com.jeno.ecommerce_backend_api.service;
 import com.jeno.ecommerce_backend_api.entity.Product;
 import com.jeno.ecommerce_backend_api.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +21,9 @@ public class ProductService {
     }
 
     //Get all products
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public Page<Product> getAllProducts(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return productRepository.findAll(pageable);
     }
 
     //Get a product by its ID
@@ -34,7 +38,7 @@ public class ProductService {
 
     //update a product by its ID
     public Product updateProduct(Long id, Product productDetails) {
-        if(productRepository.existsById(id)) {
+        if (productRepository.existsById(id)) {
             productDetails.setId(id);
             return productRepository.save(productDetails);
         }
@@ -43,7 +47,7 @@ public class ProductService {
 
     //delete a product by its ID
     public boolean deleteProduct(Long id) {
-        if(productRepository.existsById(id)) {
+        if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
             return true;
         }

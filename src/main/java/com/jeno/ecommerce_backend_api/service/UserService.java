@@ -3,12 +3,10 @@ package com.jeno.ecommerce_backend_api.service;
 import com.jeno.ecommerce_backend_api.dto.user.BaseUserDto;
 import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,8 +18,9 @@ public class UserService {
     }
 
     //Get all users
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Page<User> getAllUsers(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return userRepository.findAll(pageable);
     }
 
     //Get a user by id
@@ -42,12 +41,10 @@ public class UserService {
 
     //Update an existing user
     public User updateUser(Long id, User userDetails) {
-        return userRepository.findById(id)
-                .map(existingUser -> {
-                    existingUser.setEmail(userDetails.getEmail());
-                    return userRepository.save(existingUser);
-                })
-                .orElseThrow(() -> new RuntimeException("Resource not Found," + id));
+        return userRepository.findById(id).map(existingUser -> {
+            existingUser.setEmail(userDetails.getEmail());
+            return userRepository.save(existingUser);
+        }).orElseThrow(() -> new RuntimeException("Resource not Found," + id));
     }
 
     //Delete a user

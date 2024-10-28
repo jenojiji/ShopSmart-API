@@ -7,6 +7,9 @@ import com.jeno.ecommerce_backend_api.repository.OrderRepository;
 import com.jeno.ecommerce_backend_api.repository.ProductRepository;
 import com.jeno.ecommerce_backend_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -51,8 +54,9 @@ public class OrderService {
     }
 
     //get all orders in the system
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public Page<Order> getAllOrders(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return orderRepository.findAll(pageable);
     }
 
     //update an order
