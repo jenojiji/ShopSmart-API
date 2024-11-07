@@ -49,7 +49,7 @@ With built-in security, session management, and admin controls, ShopSmart API pr
 1. Clone the repository:
 
 ```bash
-   git clone <repository-url>
+   git clone https://github.com/jenojiji/shopping-cart-api.git
    cd ecommerce-backend-api
 ```
 
