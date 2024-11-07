@@ -49,8 +49,8 @@ With built-in security, session management, and admin controls, ShopSmart API pr
 1. Clone the repository:
 
 ```bash
-   git clone https://github.com/jenojiji/shopping-cart-api.git
-   cd ecommerce-backend-api
+   git clone https://github.com/jenojiji/ShopSmart-API.git
+   cd ShopSmart-API
 ```
 
 2. Configure the Database:
