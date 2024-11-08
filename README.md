@@ -12,9 +12,6 @@ With built-in security, session management, and admin controls, ShopSmart API pr
 
 ## Tech Stack
 
-**Client:** React, Redux, TailwindCSS
-
-**Server:** Node, Express
 - Java 17
 - Spring Boot
   - Spring Data JPA
