@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/cart/**").hasRole("USER")
                         .requestMatchers("/api/products/**").hasRole("USER")
                         .requestMatchers("/api/orders/**").hasRole("USER")
+                        .requestMatchers("/api/payment/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout
