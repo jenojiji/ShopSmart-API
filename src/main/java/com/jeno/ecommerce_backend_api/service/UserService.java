@@ -3,6 +3,7 @@ package com.jeno.ecommerce_backend_api.service;
 import com.jeno.ecommerce_backend_api.dto.user.BaseUserDto;
 import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,12 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     //Get all users
     public Page<User> getAllUsers(int pageNo, int pageSize) {

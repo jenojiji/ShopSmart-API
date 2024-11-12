@@ -7,22 +7,18 @@ import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.repository.CartRepository;
 import com.jeno.ecommerce_backend_api.repository.ProductRepository;
 import com.jeno.ecommerce_backend_api.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CartService {
 
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
-
-    public CartService(UserRepository userRepository, CartRepository cartRepository, ProductRepository productRepository) {
-        this.userRepository = userRepository;
-        this.cartRepository = cartRepository;
-        this.productRepository = productRepository;
-    }
 
     //Get cart by userId
     public Cart getCartByUserId(Long userId) {
@@ -43,10 +39,14 @@ public class CartService {
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst();
 
-        if(existingItem.isPresent()) {
+        if (existingItem.isPresent()) {
             existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
         } else {
-            CartItem cartItem = new CartItem(cart, product, quantity);
+            CartItem cartItem = CartItem.builder()
+                    .cart(cart)
+                    .product(product)
+                    .quantity(quantity)
+                    .build();
             cart.getItems().add(cartItem);
 
         }
@@ -57,7 +57,10 @@ public class CartService {
     private Cart createNewCart(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not Found"));
-        return cartRepository.save(new Cart(user));
+        Cart cart = Cart.builder()
+                .user(user)
+                .build();
+        return cartRepository.save(cart);
     }
 
     //Delete a product from Cart

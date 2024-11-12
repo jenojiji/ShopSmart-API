@@ -1,8 +1,9 @@
-package com.jeno.ecommerce_backend_api.controller;
+package com.jeno.ecommerce_backend_api.controller.user;
 
 import com.jeno.ecommerce_backend_api.entity.Order;
 import com.jeno.ecommerce_backend_api.repository.OrderRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,13 +15,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/payment")
+@RequiredArgsConstructor
 public class PaymentController {
 
     private final OrderRepository orderRepository;
-
-    public PaymentController(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
 
     @PostMapping("/verification")
     public ResponseEntity<String> handlePaymentWebhook(HttpServletRequest request, @RequestBody Map<String, Object> webhookData) {

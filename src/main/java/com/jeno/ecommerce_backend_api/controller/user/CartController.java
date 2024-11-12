@@ -1,19 +1,17 @@
-package com.jeno.ecommerce_backend_api.controller;
+package com.jeno.ecommerce_backend_api.controller.user;
 
 import com.jeno.ecommerce_backend_api.entity.Cart;
 import com.jeno.ecommerce_backend_api.service.CartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/cart")
+@RequiredArgsConstructor
 public class CartController {
 
     private CartService cartService;
-
-    public CartController(CartService cartService) {
-        this.cartService = cartService;
-    }
 
     @GetMapping
     public ResponseEntity<Cart> getCart(@RequestParam Long userId) {

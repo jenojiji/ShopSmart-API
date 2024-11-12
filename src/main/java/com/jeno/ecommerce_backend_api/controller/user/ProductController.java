@@ -1,25 +1,21 @@
-package com.jeno.ecommerce_backend_api.controller;
+package com.jeno.ecommerce_backend_api.controller.user;
 
 import com.jeno.ecommerce_backend_api.entity.Product;
 import com.jeno.ecommerce_backend_api.service.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
+@RequiredArgsConstructor
 public class ProductController {
 
     private ProductService productService;
-
-    @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     //Get all products
     @GetMapping

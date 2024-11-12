@@ -48,7 +48,7 @@ public class OrderService {
             totalAmount = totalAmount + product.getPrice();
         }
         JSONObject orderRequest = new JSONObject();
-        orderRequest.put("amount", totalAmount*100);
+        orderRequest.put("amount", totalAmount * 100);
         orderRequest.put("currency", "INR");
         orderRequest.put("receipt", "order_receipt_11");
         orderRequest.put("payment_capture", 1);
@@ -59,7 +59,17 @@ public class OrderService {
         } catch (RazorpayException e) {
             throw new RuntimeException(e.getMessage());
         }
-        Order order = new Order(LocalDate.now(), totalAmount, user, createdOrder.get("id"), createdOrder.get("status"), null, "pending", products);
+        Order order = Order.builder()
+                .date(LocalDate.now())
+                .totalAmount(totalAmount)
+                .user(user)
+                .razorpayOrderId(createdOrder.get("id"))
+                .orderStatus(createdOrder.get("status"))
+                .paymentId(null)
+                .paymentStatus("pending")
+                .products(products)
+                .build();
+
         return orderRepository.save(order);
     }
 
@@ -83,7 +93,7 @@ public class OrderService {
     public Order updateOrder(Long orderId, Order updatedOrder) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
         order.setTotalAmount(updatedOrder.getTotalAmount());
-        order.setOrderDate(updatedOrder.getOrderDate());
+        order.setDate(updatedOrder.getDate());
 
         return orderRepository.save(order);
     }
@@ -94,6 +104,4 @@ public class OrderService {
         orderRepository.delete(order);
 
     }
-
-
 }

@@ -1,33 +1,25 @@
-package com.jeno.ecommerce_backend_api.controller;
+package com.jeno.ecommerce_backend_api.controller.admin;
 
-import com.jeno.ecommerce_backend_api.dto.user.UserResponseDto;
 import com.jeno.ecommerce_backend_api.entity.Order;
 import com.jeno.ecommerce_backend_api.entity.Product;
 import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.service.OrderService;
 import com.jeno.ecommerce_backend_api.service.ProductService;
 import com.jeno.ecommerce_backend_api.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminController {
     private final UserService userService;
     private final ProductService productService;
     private final OrderService orderService;
-
-    public AdminController(UserService userService, ProductService productService, OrderService orderService) {
-        this.userService = userService;
-        this.productService = productService;
-        this.orderService = orderService;
-    }
-
 
     //get all users
     @GetMapping("/users")

@@ -1,9 +1,9 @@
-package com.jeno.ecommerce_backend_api.controller;
+package com.jeno.ecommerce_backend_api.controller.user;
 
 import com.jeno.ecommerce_backend_api.dto.order.OrderRequestDto;
 import com.jeno.ecommerce_backend_api.entity.Order;
 import com.jeno.ecommerce_backend_api.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
+@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
-
-    @Autowired
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
 
     //Get an order by orderID
     @GetMapping("/{id}")

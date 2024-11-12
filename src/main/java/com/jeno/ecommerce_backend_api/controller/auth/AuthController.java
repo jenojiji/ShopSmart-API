@@ -1,4 +1,4 @@
-package com.jeno.ecommerce_backend_api.controller;
+package com.jeno.ecommerce_backend_api.controller.auth;
 
 import com.jeno.ecommerce_backend_api.dto.auth.AuthenticationRequestDto;
 import com.jeno.ecommerce_backend_api.dto.user.BaseUserDto;
@@ -7,6 +7,7 @@ import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,16 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-    }
 
     //Register
     @PostMapping("/register")
@@ -60,7 +56,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<String> logoutUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if(session != null) {
+        if (session != null) {
             session.invalidate();
         }
         return ResponseEntity.ok("User logged out successfully");
