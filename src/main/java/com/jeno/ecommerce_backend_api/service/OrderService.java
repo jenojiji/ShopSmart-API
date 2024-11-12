@@ -48,7 +48,7 @@ public class OrderService {
             totalAmount = totalAmount + product.getPrice();
         }
         JSONObject orderRequest = new JSONObject();
-        orderRequest.put("amount", totalAmount);
+        orderRequest.put("amount", totalAmount*100);
         orderRequest.put("currency", "INR");
         orderRequest.put("receipt", "order_receipt_11");
         orderRequest.put("payment_capture", 1);

@@ -20,7 +20,7 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private String rzpOrderId;
+    private String razorpayOrderId;
     private String orderStatus;
     private String paymentId;
     private String paymentStatus;
@@ -40,13 +40,13 @@ public class Order {
     }
 
 
-    public Order(LocalDate date, Double totalAmount, User user, String rzpOrderId,
+    public Order(LocalDate date, Double totalAmount, User user, String razorpayOrderId,
                  String orderStatus, String paymentId, String paymentStatus,
                  List<Product> products) {
         this.date = date;
         this.totalAmount = totalAmount;
         this.user = user;
-        this.rzpOrderId = rzpOrderId;
+        this.razorpayOrderId = razorpayOrderId;
         this.orderStatus = orderStatus;
         this.paymentId = paymentId;
         this.paymentStatus = paymentStatus;
@@ -123,5 +123,13 @@ public class Order {
 
     public List<Product> getProducts() {
         return products;
+    }
+
+    public String getRazorpayOrderId() {
+        return razorpayOrderId;
+    }
+
+    public void setRazorpayOrderId(String razorpayOrderId) {
+        this.razorpayOrderId = razorpayOrderId;
     }
 }

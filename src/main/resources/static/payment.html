@@ -13,11 +13,11 @@
 <script>
     function startpay(){
         var userOrderId = prompt("Please enter your Order ID:");
-        var userAmount = prompt("Please enter the amount in paise:");
+<!--        var userAmount = prompt("Please enter the amount in paise:");-->
 
         var options = {
             "key": "rzp_test_aUIHKeoVctKWq2",
-            "amount": userAmount,
+<!--            "amount": userAmount*100,-->
             "currency": "INR",
             "name": "Acme Corp",
             "description": "Test Transaction",
