@@ -45,12 +45,13 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**","/api/payment/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/users/**").hasRole("USER")
                         .requestMatchers("/api/cart/**").hasRole("USER")
                         .requestMatchers("/api/products/**").hasRole("USER")
                         .requestMatchers("/api/orders/**").hasRole("USER")
+                        .requestMatchers("/api/payment/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout
