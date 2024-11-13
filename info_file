@@ -1,0 +1,5 @@
+to-do(fix):
+1 -> otp validation currently not working properly
+2 -> signature verification of razorpay all time fails
+3 -> proper env file and env properties fetching
+

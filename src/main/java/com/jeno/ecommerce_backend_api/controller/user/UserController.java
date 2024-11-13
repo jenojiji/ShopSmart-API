@@ -4,10 +4,13 @@ package com.jeno.ecommerce_backend_api.controller.user;
 import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.service.UserService;
 import lombok.RequiredArgsConstructor;
+import okhttp3.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/users")
@@ -39,4 +42,21 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    //send otp to mobile number
+    @GetMapping("/verify/mobile/{id}")
+    public ResponseEntity<Response> sendOtpToMobile(@PathVariable Long id) throws IOException {
+        System.out.println("********send otp controller*******");
+        Response response = userService.verifyMobileWithOTP(id);
+        return ResponseEntity.ok(response);
+    }
+
+    //validate otp
+    @PostMapping("/verify/mobile/{id}")
+    public ResponseEntity<Response> validateOtp(@PathVariable Long id, @RequestParam String otp) throws IOException {
+        System.out.println("**********validate otp controller*********");
+        Response response = userService.validateOtp(id,otp);
+        return ResponseEntity.ok(response);
+    }
+
 }
