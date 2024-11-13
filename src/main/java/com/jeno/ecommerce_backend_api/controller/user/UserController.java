@@ -4,6 +4,7 @@ package com.jeno.ecommerce_backend_api.controller.user;
 import com.jeno.ecommerce_backend_api.entity.User;
 import com.jeno.ecommerce_backend_api.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -46,16 +48,18 @@ public class UserController {
     //send otp to mobile number
     @GetMapping("/verify/mobile/{id}")
     public ResponseEntity<Response> sendOtpToMobile(@PathVariable Long id) throws IOException {
-        System.out.println("********send otp controller*******");
+        log.info("STARTED OTP SENDING");
         Response response = userService.verifyMobileWithOTP(id);
+        log.info("OTP SENT SUCCESSFULLY");
         return ResponseEntity.ok(response);
     }
 
     //validate otp
     @PostMapping("/verify/mobile/{id}")
     public ResponseEntity<Response> validateOtp(@PathVariable Long id, @RequestParam String otp) throws IOException {
-        System.out.println("**********validate otp controller*********");
-        Response response = userService.validateOtp(id,otp);
+        log.info("OTP VALIDATION STARTED");
+        Response response = userService.validateOtp(id, otp);
+        log.info("OTP VALIDATED;STATUS CHANGED IN DB");
         return ResponseEntity.ok(response);
     }
 
